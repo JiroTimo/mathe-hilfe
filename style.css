@@ -31,3 +31,57 @@ body {
     font-size: 0.45em;
     color: #333;
 }
+
+.graph-page {
+    max-width: 900px;
+    margin: 0 auto;
+    color: #333;
+    text-align: center;
+}
+
+.graph-page h1 {
+    margin-bottom: 8px;
+}
+
+.graph-page a {
+    color: #333;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    align-items: center;
+    justify-content: center;
+    margin: 24px 0 16px;
+    font-size: 1.1rem;
+}
+
+.controls input[type="text"] {
+    width: 180px;
+    padding: 9px;
+    border: 1px solid #888;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.controls input[type="range"] {
+    accent-color: #7b4c9e;
+    width: min(300px, 70vw);
+}
+
+#graph {
+    display: block;
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    margin: 0 auto;
+    background: #fff8ff;
+    border: 1px solid #9d789f;
+    border-radius: 8px;
+}
+
+#message {
+    min-height: 1.5em;
+    color: #a32929;
+}
