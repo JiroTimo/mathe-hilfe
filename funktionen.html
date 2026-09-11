@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funktionsgraphen - Mathe Hilfe</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .graph-page {
+            max-width: 900px;
+            margin: 0 auto;
+            color: #333;
+            text-align: center;
+        }
+
+        .graph-page h1 {
+            margin-bottom: 8px;
+        }
+
+        .graph-page a {
+            color: #333;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 20px;
+            align-items: center;
+            justify-content: center;
+            margin: 24px 0 16px;
+            font-size: 1.1rem;
+        }
+
+        .controls input[type="text"] {
+            width: 180px;
+            padding: 9px;
+            border: 1px solid #888;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .controls input[type="range"] {
+            accent-color: #7b4c9e;
+            width: min(300px, 70vw);
+        }
+
+        #graph {
+            display: block;
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            margin: 0 auto;
+            background: #fff8ff;
+            border: 1px solid #9d789f;
+            border-radius: 8px;
+        }
+
+        #message {
+            min-height: 1.5em;
+            color: #a32929;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="graph-page">
+        <h1>Funktionsgraph</h1>
+        <p>Gib eine Funktion ein und verändere <strong>x</strong> mit dem Regler.</p>
+
+        <div class="controls">
+            <label for="function-input">f(x) =</label>
+            <input id="function-input" type="text" value="x^2" autocomplete="off"
+                aria-label="Mathematische Funktion">
+            <label for="x-slider">x = <output id="x-value">0.00</output></label>
+            <input id="x-slider" type="range" min="-10" max="10" step="0.01" value="0"
+                aria-label="x-Wert">
+        </div>
+
+        <p id="message" role="status"></p>
+        <canvas id="graph" width="800" height="520" aria-label="Koordinatensystem mit Funktionsgraph"></canvas>
+        <p><a href="index.html">Zur Startseite</a></p>
+    </main>
+    <script src="script.js"></script>
+</body>
+
+</html>
