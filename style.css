@@ -12,6 +12,7 @@ body {
 
 .title {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
@@ -20,4 +21,13 @@ body {
     color: #333;
     text-align: center;
     margin-top: 20px;
+}
+
+.title p {
+    margin-top: 0;
+}
+
+.title a {
+    font-size: 0.45em;
+    color: #333;
 }
