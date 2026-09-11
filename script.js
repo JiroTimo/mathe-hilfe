@@ -1,10 +1,12 @@
 const canvas = document.getElementById("graph");
 const functionInput = document.getElementById("function-input");
-const slider = document.getElementById("x-slider");
-const xValue = document.getElementById("x-value");
+const slopeSlider = document.getElementById("slope-slider");
+const interceptSlider = document.getElementById("intercept-slider");
+const slopeValue = document.getElementById("slope-value");
+const interceptValue = document.getElementById("intercept-value");
 const message = document.getElementById("message");
 
-if (canvas && functionInput && slider) {
+if (canvas && functionInput && slopeSlider && interceptSlider) {
     const context = canvas.getContext("2d");
     const xMin = -10;
     const xMax = 10;
@@ -26,14 +28,14 @@ if (canvas && functionInput && slider) {
         parsed = parsed.replace(/Math\.ln/g, "Math.log");
         parsed = parsed.replace(/(\d|\))x/g, "$1*x").replace(/x(\d|\()/g, "x*$1");
 
-        if (!/^[0-9x+\-*/%().,a-zA-Z*]+$/.test(parsed) ||
+        if (!/^[0-9xmb+\-*/%().,a-zA-Z*]+$/.test(parsed) ||
             /(?:Math\.){2}|(?:^|[^a-zA-Z])(?:constructor|window|document|eval)(?:[^a-zA-Z]|$)/.test(parsed)) {
             throw new Error("Ungültige Funktion");
         }
 
-        const calculate = new Function("x", `"use strict"; return (${parsed});`);
-        return (x) => {
-            const result = Number(calculate(x));
+        const calculate = new Function("x", "m", "b", `"use strict"; return (${parsed});`);
+        return (x, slope, intercept) => {
+            const result = Number(calculate(x, slope, intercept));
             return Number.isFinite(result) ? result : null;
         };
     }
@@ -77,6 +79,8 @@ if (canvas && functionInput && slider) {
         drawAxes();
         try {
             const calculate = parseFunction(functionInput.value);
+            const slope = Number(slopeSlider.value);
+            const intercept = Number(interceptSlider.value);
             context.strokeStyle = "#7b4c9e";
             context.lineWidth = 3;
             context.beginPath();
@@ -84,7 +88,7 @@ if (canvas && functionInput && slider) {
 
             for (let pixel = 0; pixel <= canvas.width; pixel += 1) {
                 const x = xMin + (pixel / canvas.width) * (xMax - xMin);
-                const y = calculate(x);
+                const y = calculate(x, slope, intercept);
                 if (y === null || Math.abs(y) > 1000) {
                     drawing = false;
                     continue;
@@ -99,26 +103,23 @@ if (canvas && functionInput && slider) {
             }
             context.stroke();
 
-            const selectedX = Number(slider.value);
-            const selectedY = calculate(selectedX);
-            xValue.value = selectedX.toFixed(2);
-            if (selectedY === null) {
-                message.textContent = "Für diesen x-Wert ist die Funktion nicht definiert.";
-                return;
-            }
-            message.textContent = `f(${selectedX.toFixed(2)}) = ${selectedY.toFixed(2)}`;
-            if (selectedY >= yMin && selectedY <= yMax) {
+            slopeValue.value = slope.toFixed(2);
+            interceptValue.value = intercept.toFixed(2);
+            message.textContent = `Steigung: ${slope.toFixed(2)} | y-Achsenabschnitt: ${intercept.toFixed(2)}`;
+            const yIntercept = calculate(0, slope, intercept);
+            if (yIntercept !== null && yIntercept >= yMin && yIntercept <= yMax) {
                 context.fillStyle = "#d34f73";
                 context.beginPath();
-                context.arc(toCanvasX(selectedX), toCanvasY(selectedY), 6, 0, 2 * Math.PI);
+                context.arc(toCanvasX(0), toCanvasY(yIntercept), 6, 0, 2 * Math.PI);
                 context.fill();
             }
         } catch (error) {
-            message.textContent = "Bitte gib eine gültige Funktion ein, z. B. x^2, sin(x) oder 2*x+1.";
+            message.textContent = "Bitte gib eine gültige Funktion ein, z. B. m*x+b oder m*x^2+b.";
         }
     }
 
     functionInput.addEventListener("input", drawGraph);
-    slider.addEventListener("input", drawGraph);
+    slopeSlider.addEventListener("input", drawGraph);
+    interceptSlider.addEventListener("input", drawGraph);
     drawGraph();
 }
